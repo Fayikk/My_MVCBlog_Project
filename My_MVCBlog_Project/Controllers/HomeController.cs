@@ -18,15 +18,53 @@ namespace My_MVCBlog_Project.Controllers
         private readonly ICommentService _commentService;
         private readonly ApplicationDbContext _context;
         private readonly IEBulletinService _eBulletinService;
+        private readonly IUserService _userService;
 
-        public HomeController(ILogger<HomeController> logger,INoteService noteService,IEBulletinService eBulletinService, ICommentService commentService,ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger,INoteService noteService, IEBulletinService eBulletinService, ICommentService commentService, ApplicationDbContext context, IUserService userService)
         {
             _noteService = noteService;
             _logger = logger;
             _commentService = commentService;
             _context = context;
             _eBulletinService = eBulletinService;
+            _userService = userService;
         }
+
+
+        public IActionResult ProfileEdit()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult ProfileImageSave(IFormFile profileImage)
+        {
+            try
+            {
+                string uploadPath = Path.Combine(Environment.CurrentDirectory, "wwwroot", "images");
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+                int userId = HttpContext.Session.GetInt32(Constants.UserId).Value;
+                string fileName = $"userImage_{userId}.jpg";
+                string filePath = Path.Combine(uploadPath, fileName);
+                using (FileStream stream = System.IO.File.Create(filePath))
+                {
+                    profileImage.CopyTo(stream);
+                }
+                ViewData["Success"] = "Profil Resminiz Güncellendi";
+            }
+            catch (Exception)
+            {
+
+                ModelState.AddModelError(string.Empty, "Hatalı Resim Ekleme İşlemi Gerçekleştirdiniz");
+            }
+
+            return View(nameof(ProfileEdit));
+        }
+
 
         public IActionResult Index(int? categoryId,string mode)
         {

@@ -1,6 +1,9 @@
 ﻿@{
     var username = Context.Session.GetString(Constants.Username);
     string role = Context.Session.GetString(Constants.UserRole);
+
+
+
 }
 
 
@@ -90,17 +93,43 @@
                         }
                         else
                         {
+
+                            
+                                var userId = Context.Session.GetInt32(Constants.UserId).Value;
+                           
+
+                            <div class="dropdown">
+
+                                @*<img class="rounded-circle img-thumbnail" src="/images/userImage_@(userId).jpg" />*@
+
+
+                                <img  src="/images/userImage_@(userId).jpg"
+                                 class="rounded-circle"
+                                 height="25"
+                                 loading="lazy" />
+
+
+                            </div>
                                   <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @username
                             </a>
+                          
                             <ul class="dropdown-menu">
                                 <a class="dropdown-item">Profil Göster</a>
-                                <a class="dropdown-item">Profil Düzenle</a>
+                                <a class="dropdown-item" asp-action="ProfileEdit" >Profil Düzenle</a>
                                 <a class="dropdown-item">Profil Sil</a>
                                 <a class="dropdown-item" asp-action="Logout" asp-controller="User" >Çıkış</a>
                             </ul>
                         </li>
+
+
+
+                           
+
+
+
+
                         }
 
                     </ul>

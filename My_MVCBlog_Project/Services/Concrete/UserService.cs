@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using My_MVCBlog_Project.Context;
 using My_MVCBlog_Project.Core;
 using My_MVCBlog_Project.Entities;
@@ -16,6 +17,22 @@ namespace My_MVCBlog_Project.Services.Concrete
             _context = context;
            
         }
+
+
+        public ServiceResponse<User> Find(int? id)
+        {
+            ServiceResponse<User> result = new ServiceResponse<User>
+            {
+                Data = _context.Users.FirstOrDefault(x => x.Id == id)
+
+            };
+            if (result.Data != null)
+            {
+                result.AddError("Kayıt Bulunamadı");
+            }
+            return result;
+        }
+
 
         public ServiceResponse<User> Create(UserViewModel model, HttpContext httpContext)
         {
@@ -42,6 +59,39 @@ namespace My_MVCBlog_Project.Services.Concrete
                 result.Data = user;
             }
             return result;  
+        }
+
+        public ServiceResponse<User> Edit(int id, UserEditViewModel model, HttpContext httpContext)
+        {
+            ServiceResponse<User> result = new ServiceResponse<User>();
+            model.Username = model.Username.Trim().ToLower();
+            model.Email = model.Email.Trim().ToLower();
+            if (_context.Users.Any(x=>x.Email.ToLower() == model.Email.ToLower() && x.Id != id))
+            {
+                result.AddError($"'{model.Email}' Email zaten kayıtlıdır");
+                return result;
+            }
+            if (_context.Users.Any(x => x.Username.ToLower() == model.Username.ToLower() && x.Id != id))
+            {
+                result.AddError($"'{model.Username}' Username zaten kayıtlıdır");
+                return result;
+            }
+
+            var dbUser = _context.Users.Find(id);
+            dbUser.Username = model.Username;
+            dbUser.Email = model.Email;
+            dbUser.CreatedUser = httpContext.Session.GetString(Constants.Username);
+            dbUser.IsActive = true;
+            dbUser.IsAdmin = false;
+            dbUser.CreatedDate = dbUser.CreatedDate;
+            dbUser.ModifiedDate = DateTime.Now;
+            dbUser.ModifiedUser = httpContext.Session.GetString(Constants.Username);
+
+            if (_context.SaveChanges() == 0)
+            {
+                result.AddError("Kayıt Yapılamadı");
+            }
+            return result;
         }
 
         public ServiceResponse<List<User>> List()
