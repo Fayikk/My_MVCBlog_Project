@@ -1,0 +1,151 @@
+﻿@{
+    var username = Context.Session.GetString(Constants.Username);
+    string role = Context.Session.GetString(Constants.UserRole);
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My_MVCBlog_Project</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/My_MVCBlog_Project.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MyNote_SampleApp</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+
+                        @if(string.IsNullOrEmpty(username) == false)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-black" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-wrench mr-2"></i> İşlemler
+                                </a>
+                                <ul class="dropdown-menu">
+
+
+                                    <a class="dropdown-item" asp-action="Create" asp-controller="Note">Not Ekle</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item">Yazılarım</a>
+                                    <a class="dropdown-item"><i class="fa fa-star"></i>Beğendiklerim</a>
+                                    <div class="dropdown-divider"></div>
+                                    @if(string.IsNullOrEmpty(role) == false && role == "admin")
+                                    {
+                                             <a class="dropdown-item" asp-action="Create" asp-controller="Category">Kategori Ekle</a>
+                                            <a class="dropdown-item" asp-action="Index" asp-controller="Category"><i class="fa fa-star"></i>Kategorileri Yönet</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item">Kullanıcı Ekle</a>
+                                            <a class="dropdown-item"><i class="fa fa-star"></i>Kullanıcıları Yönet</a>
+                                            <a class="dropdown-item" asp-action="Index" asp-controller="EBulletin"><i class="fa-solid fa-chart-bullet"></i>Bülten</a>
+                                    }
+                               
+                                </ul>
+                            </li>
+
+                        }
+
+                   
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-black" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-wrench mr-2"></i> Kategoriler
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="categories">
+                                <a class="dropdown-item">
+                                    <i class="fa fa-th-list mr-2"></i>Tümü
+                                </a>
+                                //Invoke
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area=""><i class="fa fa-star mr-2"></i>En Beğenilenler</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area=""><i class="fa fa-th-list mr-2"></i>Son Yazılar</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ">
+                        @if (string.IsNullOrEmpty(username))
+                        {
+                                  <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-action="Login" asp-controller="User"><i class="fa fa-sign-in mr-4"></i>Giriş</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-action="Register" asp-controller="User"><i class="fa fa-user mr-4"></i>Kayıt</a>
+                            </li>
+                        }
+                        else
+                        {
+                                  <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @username
+                            </a>
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item">Profil Göster</a>
+                                <a class="dropdown-item">Profil Düzenle</a>
+                                <a class="dropdown-item">Profil Sil</a>
+                                <a class="dropdown-item" asp-action="Logout" asp-controller="User" >Çıkış</a>
+                            </ul>
+                        </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    @await RenderSectionAsync("Carousel",required:false)
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="row">
+            <div class="col">
+                <div class="text-center p-3"
+                     style="background-color: white">
+                    @DateTime.Now.Year Copyright:
+                    <a class="text-black">My_MVC_blog</a>
+                </div>
+            </div>
+            <div class="col">
+                <div class=" text-right">
+                    <form method="post" asp-action="SaveEBulletinEmail">
+
+                        <div class="input-group">
+                            <input class="form-control border-end-0 border rounded-pill" type="text" id="EBulletinEmail" name="EBulletinEmail" placeholder="E-Posta">
+                            <span class="input-group-append">
+                                <button class="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3" type="submit">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+</div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

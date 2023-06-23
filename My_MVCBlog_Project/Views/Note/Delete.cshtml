@@ -1,0 +1,53 @@
+﻿@using My_MVCBlog_Project.Entities;
+@model Note
+
+@{
+    ViewData["Title"] = "Not Sil";
+}
+
+<div class="row">
+    <div class="col">
+        <h3 class="display-4 border-bottom">@ViewData["Title"]</h3>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col">
+        <div class="row">
+            <dt>Title</dt>
+            <dd>@Model.Title</dd>
+
+            <dt>@Html.DisplayNameFor(x=>x.Summary)</dt>
+            <dd>@Model.Summary</dd>
+
+            <dt>@Html.DisplayNameFor(x=>x.Detail)</dt>
+            <dd>@Model.Detail</dd>
+
+              <dt>Created Users</dt>
+            <dd>@Model.CreatedUser</dd>
+
+              <dt>Created Date</dt>
+            <dd>@Model.CreatedDate</dd>
+
+              <dt>Modified User</dt>
+            <dd>@Model.ModifiedUser</dd>
+
+            <dt>Modified Date</dt>
+            <dd>@Model.ModifiedDate</dd>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4" >
+    <form  method="post">
+        <p class="text-danger">İlgili Notu kaldırmak istediğinizden eminmisiniz?</p>
+        <div class="col">
+            <a class="btn btn-warning btn-sm" asp-action="DeleteNote" asp-controller="Note" asp-route-id="@Model.Id">
+                <i class="fa fa-trash mr-2" ></i>Notu Sil
+            </a>
+            <a class="btn btn-secondary btn-sm" asp-action="Index" >
+                <i class="fa fa-arrow-left mr-2" ></i>Listeye Dön!
+            </a>
+        </div>
+    </form>
+</div>

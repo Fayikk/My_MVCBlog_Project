@@ -1,0 +1,25 @@
+﻿@using My_MVCBlog_Project.Entities;
+@model List<EBulletin>
+
+@{
+    ViewData["Title"] = "Bültendeki kayıtlı kullanıcılar";
+}
+
+<h2 class="text-center" > 
+    @ViewData["Title"]
+</h2>
+
+<div class="row">
+    <div class="col">
+        @foreach (var item in Model)
+        {
+            <div class="card" >
+                <div class="card-body" >@item.Email</div>
+                <td class="text-center" >
+                    <i class="fa fa-@(!item.Banned ? "check text-success " : "times text-danger")" ></i>
+                </td>
+            </div>
+        }
+        <a type="button" asp-action="SendEmails" asp-controller="EBulletin">Bültendeki kullanıcılara e-posta gönder</a>
+    </div>
+</div>

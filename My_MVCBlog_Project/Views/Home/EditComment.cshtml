@@ -1,0 +1,14 @@
+﻿@model CommentEditViewModel
+
+
+<form method="post">
+    <div class="form-group">
+        <input type="number" hidden asp-for="@Model.CommentId"  />
+    </div>
+    <div class="form-group">
+        <textarea type="text" asp-for="@Model.CommentText" rows="2" class="form-control" placeholder="yorumunuz" ></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">
+        Güncelle
+    </button>
+</form>

@@ -1,0 +1,41 @@
+﻿@model EBulletinSendEmailViewModel
+
+@{
+    ViewData["Title"] = "E-Bülten Mesaj Gönderimi";
+}
+
+<div class="row mb-4">
+     <div class="col">
+         <h3 class="display-4 border-bottom">@ViewData["Title"]</h3>
+     </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Emails">Kullanıcı Mailleri</label>
+                <select asp-for="Emails" class="form-control" asp-items="@((List<SelectListItem>)ViewData["bulletins"])"></select>
+                <small>Çoklu seçim yapabilirsiniz(Ctrl)</small>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subject">Bülten Konusu</label>
+                <input asp-for="Subject" type="text" class="form-control" placeholder="Konu" />
+                <span asp-validation-for="Subject" class="text-danger small"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Text">Mesaj</label>
+                <input asp-for="Text" type="text" class="form-control" placeholder="Mesajınız" />
+                <span asp-validation-for="Text" class="text-danger small"></span>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-save mr-2" ></i>Gönder
+                </button>
+            </div>
+            <a class="btn btn-secondary" asp-action="Index" asp-controller="EBulletin">
+                <i class="fa fa-arrow-left mr-2"></i>Listeye Dön!
+            </a>
+        </form>
+    </div>
+</div>

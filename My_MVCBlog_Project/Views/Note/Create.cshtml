@@ -1,0 +1,55 @@
+﻿@model NoteViewModel
+
+@{
+    ViewData["Title"] = "Not oluştur";
+}
+
+
+<div class="row">
+    <div class="col">
+        <h3 class="display-4 border-bottom">@ViewData["Title"]</h3>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col">
+      
+            <form method="post" asp-action="Create">
+            <div class="form-group">
+                <label asp-for="CategoryId">KategoriId</label>
+                <select asp-for="CategoryId" class="form-control" asp-items="@((List<SelectListItem>)ViewData["categories"])">
+                    <option selected>Seçiniz</option>
+                </select>
+                </div>
+
+            <div class="form-group">
+                <label asp-for="Title">Başlık</label>
+                <input asp-for="Title" type="text" class="form-control" placeholder="Başlık" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Summary">Özet</label>
+                <input asp-for="Summary" type="text" class="form-control" placeholder="Özet" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Detail">Detay</label>
+                <input asp-for="Detail" type="text" class="form-control" placeholder="Detay" />
+            </div>
+            <div class="form-group form-check">
+                <input asp-for="IsDraft" type="checkbox" class="form-check-input" placeholder="isDraft" />
+
+                <label asp-for="IsDraft" class="form-check-label">Aktif</label>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-save mr-2"></i>Kaydet
+                </button>
+            </div>
+            <a class="btn btn-secondary" asp-action="Index" asp-controller="Note">
+                <i class="fa fa-arrow-left mr-2" ></i>Listeye Dön!
+            </a>
+            </form>
+     
+     
+    </div>
+</div>

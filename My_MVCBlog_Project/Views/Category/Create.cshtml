@@ -1,0 +1,34 @@
+﻿@model CategoryViewModel
+@{
+    ViewData["Title"] = "Kategori Oluştur";
+}
+
+<div class="row mb-4">
+    <div class="col">
+        <h3 class="display-4 border-bottom">@ViewData["Title"]</h3>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col">
+        <form method="post" action="Create">
+            <div class="form-group">
+                <label asp-for="Name">Kategori Adı</label>
+                <input asp-for="Name" type="text" class="form-control" placeholder="Kategori Adı">
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="font-weight-bold small">Kategori Açıklama</label>
+                <textarea asp-for="Description" rows="4" class="form-control" placeholder="Açıklama"></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-save mr-2"></i>Kaydet
+                </button>
+            </div>
+            <a class="btn btn-secondary" asp-action="Index" asp-controller="Category"><i class="fa fa-arrow-left mr-2"></i>Listeye Dön</a>
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@using My_MVCBlog_Project.Entities;
+@model Category
+@{
+    ViewData["Title"] = "Kategori Sil";
+}
+
+
+<div class="row mb-4">
+    <div class="col">
+        <h3 class="display-4 border-bottom">@ViewData["Title"]</h3>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col">
+        <div class="row">
+            <dt>Kategori Adı</dt>
+            <dd>@Model.Name</dd>
+        
+           <dt>Kategori Açıklama</dt>
+            <dd>@Model.Description</dd>
+
+            <dt>Oluşturan</dt>
+            <dd>@Model.CreatedUser</dd
+
+            <dt>Oluşturma Tarihi</dt>
+            <dd>@Model.CreatedDate</dd>
+
+            <dt>Güncelleyen</dt>
+            <dd>@Model.ModifiedUser</dd>
+
+            <dt>Güncelleme Tarihi</dt>
+            <dd>@Model.ModifiedDate</dd>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mb-4">
+    <form method="post">
+    <div class="col">
+        <a class="btn btn-warning btn-sm" asp-action="DeleteConfirm" asp-controller="Category" asp-route-id="@Model.Id">
+            <i class="fa fa-trash mr-2"></i>Kategoriyi Sil
+        </a>
+          <a class="btn btn-secondary btn-sm" asp-action="Index">
+            <i class="fa fa-arrow-left mr-2"></i>Listeye Dön!
+        </a>
+    </div>
+
+    </form>
+</div>
