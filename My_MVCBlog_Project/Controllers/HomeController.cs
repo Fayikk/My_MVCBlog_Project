@@ -7,6 +7,7 @@ using My_MVCBlog_Project.Models;
 using My_MVCBlog_Project.Models.DTO;
 using My_MVCBlog_Project.Services;
 using My_MVCBlog_Project.Services.Abstract;
+using Org.BouncyCastle.Asn1.Pkcs;
 using System.Diagnostics;
 
 namespace My_MVCBlog_Project.Controllers
@@ -19,8 +20,8 @@ namespace My_MVCBlog_Project.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IEBulletinService _eBulletinService;
         private readonly IUserService _userService;
-
-        public HomeController(ILogger<HomeController> logger,INoteService noteService, IEBulletinService eBulletinService, ICommentService commentService, ApplicationDbContext context, IUserService userService)
+        private readonly IMailHelper _mailHelper;
+        public HomeController(ILogger<HomeController> logger,IMailHelper mailHelper,INoteService noteService, IEBulletinService eBulletinService, ICommentService commentService, ApplicationDbContext context, IUserService userService)
         {
             _noteService = noteService;
             _logger = logger;
@@ -28,6 +29,7 @@ namespace My_MVCBlog_Project.Controllers
             _context = context;
             _eBulletinService = eBulletinService;
             _userService = userService;
+            _mailHelper = mailHelper;
         }
 
 
@@ -65,6 +67,41 @@ namespace My_MVCBlog_Project.Controllers
             return View(nameof(ProfileEdit));
         }
 
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgetPasswordPost(string email)
+        {
+            _mailHelper.SendChangePasswordEmail("Parola Değişikliği", email);
+            return View(nameof(WarningPage));
+        }
+
+        public IActionResult ChangePassword(Guid changePasswordId)
+        {
+            var user = _userService.FindGuid(changePasswordId);
+            ViewData["changePasswordGuid"] = changePasswordId;
+            ChangePasswordModel model = new ChangePasswordModel();
+            model.Guid = changePasswordId;
+            return View(model);
+        }
+
+        [HttpPost]
+
+        public IActionResult ImplementChangePassword(ChangePasswordModel model)
+        {
+            var user = _userService.FindGuid(model.Guid);
+            var isSuccess = _userService.ChangePasswordImplement(model);
+            return RedirectToAction("Login", "User");
+
+        }
+
+        public IActionResult WarningPage()
+        {
+            return View();
+        }
 
         public IActionResult Index(int? categoryId,string mode)
         {

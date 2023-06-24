@@ -30,6 +30,21 @@ namespace My_MVCBlog_Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EBulletins",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Banned = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EBulletins", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -41,6 +56,7 @@ namespace My_MVCBlog_Project.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    ChangePasswordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -140,6 +156,9 @@ namespace My_MVCBlog_Project.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "EBulletins");
 
             migrationBuilder.DropTable(
                 name: "Notes");

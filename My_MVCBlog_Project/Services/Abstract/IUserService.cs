@@ -12,5 +12,9 @@ namespace My_MVCBlog_Project.Services.Abstract
         ServiceResponse<User> Edit(int id,UserEditViewModel model,HttpContext httpContext);
 
         ServiceResponse<User> Find(int? id);
+        ServiceResponse<User> FindEmail(string username);
+        ServiceResponse<User> FindGuid(Guid id);
+
+        public ServiceResponse<User> ChangePasswordImplement(ChangePasswordModel model);
     }
 }

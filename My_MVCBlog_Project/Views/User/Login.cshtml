@@ -1,5 +1,8 @@
-﻿@model LoginViewModel
+﻿@using My_MVCBlog_Project.Services.Abstract;
+@model LoginViewModel
+@inject IUserService _userService
 @{
+
     ViewData["Title"] = "Giriş";
 }
 
@@ -26,6 +29,8 @@
                 <div class="text text-center">
                     <button type="submit" class="btn btn-primary" onclick="fa fa-send mr-2"><i class="fa fa-paper-plane mr-2"></i>Login</button>
                 </div>
+
+                <a asp-action="ForgetPassword" asp-controller="Home" >Parolamı Unutum</a>
             </form>
         </div>
 

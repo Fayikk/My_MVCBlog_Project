@@ -12,6 +12,8 @@ namespace My_MVCBlog_Project.Entities
         public string? Password { get; set; }    
         public  bool IsActive { get; set; }   
         public bool IsAdmin { get; set; }   
+
+        public Guid ChangePasswordId { get; set; }  
         public virtual List<Note> Notes { get; set; }   
        
     }

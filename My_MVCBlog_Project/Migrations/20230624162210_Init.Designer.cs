@@ -12,7 +12,7 @@ using My_MVCBlog_Project.Context;
 namespace My_MVCBlog_Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230618064859_Init")]
+    [Migration("20230624162210_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -100,6 +100,30 @@ namespace My_MVCBlog_Project.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("My_MVCBlog_Project.Entities.EBulletin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Banned")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EBulletins");
+                });
+
             modelBuilder.Entity("My_MVCBlog_Project.Entities.Note", b =>
                 {
                     b.Property<int>("Id")
@@ -159,6 +183,9 @@ namespace My_MVCBlog_Project.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("ChangePasswordId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");

@@ -13,9 +13,11 @@ namespace My_MVCBlog_Project.Controllers
     public class EBulletinController : Controller
     {
         private readonly IEBulletinService _eBulletinService;
-        public EBulletinController(IEBulletinService ebulletinService)
+        private readonly IMailHelper _mailHelper;
+        public EBulletinController(IEBulletinService ebulletinService, IMailHelper mailHelper)
         {
             _eBulletinService = ebulletinService;
+            _mailHelper = mailHelper;
         }
 
         public IActionResult Index()
@@ -33,7 +35,6 @@ namespace My_MVCBlog_Project.Controllers
         public IActionResult SendEmails(EBulletinSendEmailViewModel model)
         {
             LoadBulletinSelectDataView();
-            MailHelper _mailHelper = new MailHelper();
             _mailHelper.SendEmail(model.Subject, model.Text, model.Emails.ToArray());
             return RedirectToAction(nameof(Index));
         }

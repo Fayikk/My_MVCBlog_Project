@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using My_MVCBlog_Project.Context;
+using My_MVCBlog_Project.Core;
 using My_MVCBlog_Project.Services.Abstract;
 using My_MVCBlog_Project.Services.Concrete;
 
@@ -19,6 +20,7 @@ builder.Services.AddScoped<INoteService,NoteService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IEBulletinService, EBulletinService>();
+builder.Services.AddScoped<IMailHelper,MailHelper>();
 
 var app = builder.Build();
 

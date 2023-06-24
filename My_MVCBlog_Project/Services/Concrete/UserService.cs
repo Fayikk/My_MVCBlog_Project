@@ -148,6 +148,7 @@ namespace My_MVCBlog_Project.Services.Concrete
                 CreatedUser = "System",
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
+                ChangePasswordId = Guid.NewGuid(),
                 ModifiedUser = "",
             });
             if (_context.SaveChanges()==0)
@@ -155,6 +156,50 @@ namespace My_MVCBlog_Project.Services.Concrete
                 result.AddError("Kayıt yapılamadı");
             }
             return result;
+        }
+
+        public ServiceResponse<User> FindEmail(string email)
+        {
+            ServiceResponse<User> result = new ServiceResponse<User>();
+
+            result.Data = _context.Users.FirstOrDefault(x => x.Email == email);
+
+          
+            if (result.Data != null)
+            {
+                result.AddError("Kayıt Bulunamadı");
+            }
+            return result;
+        }
+
+        public ServiceResponse<User> FindGuid(Guid id)
+        {
+            ServiceResponse<User> result = new ServiceResponse<User>();
+
+            result.Data = _context.Users.FirstOrDefault(x => x.ChangePasswordId == id);
+
+
+            if (result.Data != null)
+            {
+                result.AddError("Kayıt Bulunamadı");
+            }
+            return result;
+        }
+
+        public ServiceResponse<User> ChangePasswordImplement(ChangePasswordModel model)
+        {
+            ServiceResponse<User> result = new ServiceResponse<User>();
+            var user = _context.Users.FirstOrDefault(x => x.ChangePasswordId == model.Guid);
+            if (user != null)
+            {
+                user.Password = model.NewPassword;
+                result.Data = user;
+                _context.SaveChanges();
+                return result;
+            
+            
+            }
+            return null;
         }
     }
 }
