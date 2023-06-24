@@ -5,6 +5,7 @@ using My_MVCBlog_Project.Core;
 using My_MVCBlog_Project.Entities;
 using My_MVCBlog_Project.Models;
 using My_MVCBlog_Project.Services.Abstract;
+using NETCore.Encrypt.Extensions;
 using System.Net.Http;
 
 namespace My_MVCBlog_Project.Services.Concrete
@@ -111,7 +112,7 @@ namespace My_MVCBlog_Project.Services.Concrete
             ServiceResponse<User> result = new ServiceResponse<User>();
             model.Username = model.Username.Trim().ToLower();
             User user = _context.Users.SingleOrDefault(x => x.Username.ToLower() == model.Username.ToLower());
-            if (user.Username.ToLower() != model.Username.ToLower() || user.Password.ToLower() != model.Password.ToLower())
+            if (MatchPassword(model.Username,model.Password) == false)
             {
                 result.AddError("Hatalı kullanıcı adı veya şifre");
             }
@@ -142,7 +143,7 @@ namespace My_MVCBlog_Project.Services.Concrete
             {
                 Username = model.Username,
                 Email = model.Email,
-                Password = model.Password,
+                Password = $"{Constants.PasswordMix}{model.Password}".MD5(),
                 IsActive = true,
                 IsAdmin = false,
                 CreatedUser = "System",
@@ -150,7 +151,7 @@ namespace My_MVCBlog_Project.Services.Concrete
                 ModifiedDate = DateTime.Now,
                 ChangePasswordId = Guid.NewGuid(),
                 ModifiedUser = "",
-            });
+            }) ;
             if (_context.SaveChanges()==0)
             {
                 result.AddError("Kayıt yapılamadı");
@@ -193,6 +194,7 @@ namespace My_MVCBlog_Project.Services.Concrete
             if (user != null)
             {
                 user.Password = model.NewPassword;
+                user.Password = $"{Constants.PasswordMix}{user.Password}".MD5();
                 result.Data = user;
                 _context.SaveChanges();
                 return result;
@@ -200,6 +202,21 @@ namespace My_MVCBlog_Project.Services.Concrete
             
             }
             return null;
+        }
+
+        public bool MatchPassword(string username,string password)
+        {
+            var result = _context.Users.FirstOrDefault(x => x.Username == username);
+            var encryptedPassword = $"{Constants.PasswordMix}{password}".MD5();
+            if (result != null)
+            {
+                if (encryptedPassword == result.Password)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
     }
 }

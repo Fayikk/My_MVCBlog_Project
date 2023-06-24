@@ -6,5 +6,8 @@
         public const string Username = "Username";
         public const string UserEmail = "UserEmail";
         public const string UserRole = "UserRole";
+
+
+        public const string PasswordMix = "qwertyuıop21123443";
     }
 }
